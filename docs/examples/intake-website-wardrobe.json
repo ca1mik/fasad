@@ -1,0 +1,26 @@
+{
+  "source_channel": "website_form",
+  "external_message_id": "site-2026-wardrobe-001",
+  "subject": "Заявка на шкаф-купе",
+  "text": "Нужен шкаф-купе 1800x2400x600, цвет белый дуб, клиент Иван Петров, телефон +79991234567, email ivan.petrov@example.com. Внутри 5 полок и 2 секции.",
+  "sender": {
+    "full_name": "Иван Петров",
+    "phone": "+79991234567",
+    "email": "ivan.petrov@example.com",
+    "external_id": "site-user-001"
+  },
+  "attachments": [
+    {
+      "file_name": "wardrobe-sketch.pdf",
+      "mime_type": "application/pdf",
+      "size_bytes": 154322,
+      "external_url": "https://example.com/uploads/wardrobe-sketch.pdf"
+    }
+  ],
+  "raw_payload": {
+    "utm_source": "google",
+    "utm_campaign": "wardrobe-moscow",
+    "page": "/catalog/wardrobes",
+    "comment": "Удобно звонить после 15:00"
+  }
+}

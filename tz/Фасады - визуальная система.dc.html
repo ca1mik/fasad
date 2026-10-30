@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Визуальная система — управление фасадным производством</title>
+<style>
+:root{
+  --bg:oklch(0.968 0.004 250);
+  --surface:oklch(1 0 0);
+  --surface-2:oklch(0.940 0.006 250);
+  --line:oklch(0.878 0.008 250);
+  --line-strong:oklch(0.760 0.012 250);
+  --ink:oklch(0.235 0.018 254);
+  --ink-2:oklch(0.470 0.014 254);
+  --ink-3:oklch(0.620 0.012 254);
+  --accent:oklch(0.520 0.135 248);
+  --accent-soft:oklch(0.930 0.030 248);
+  --accent-on:oklch(0.995 0 0);
+  --st-wait:oklch(0.500 0.014 254);
+  --st-wait-bg:oklch(0.925 0.008 254);
+  --st-run:oklch(0.520 0.135 248);
+  --st-run-bg:oklch(0.930 0.034 248);
+  --st-block:oklch(0.560 0.135 62);
+  --st-block-bg:oklch(0.930 0.040 78);
+  --st-done:oklch(0.500 0.115 158);
+  --st-done-bg:oklch(0.925 0.036 158);
+  --st-defect:oklch(0.520 0.165 27);
+  --st-defect-bg:oklch(0.930 0.032 27);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono","Segoe UI Mono","Roboto Mono","Noto Sans Mono","DejaVu Sans Mono",Consolas,monospace;
+}
+[data-theme="dark"]{
+  --bg:oklch(0.196 0.012 254);
+  --surface:oklch(0.245 0.014 254);
+  --surface-2:oklch(0.290 0.014 254);
+  --line:oklch(0.340 0.014 254);
+  --line-strong:oklch(0.450 0.016 254);
+  --ink:oklch(0.945 0.006 250);
+  --ink-2:oklch(0.760 0.010 250);
+  --ink-3:oklch(0.620 0.012 250);
+  --accent:oklch(0.700 0.130 248);
+  --accent-soft:oklch(0.330 0.058 248);
+  --accent-on:oklch(0.180 0.020 254);
+  --st-wait:oklch(0.740 0.012 254);
+  --st-wait-bg:oklch(0.310 0.010 254);
+  --st-run:oklch(0.720 0.125 248);
+  --st-run-bg:oklch(0.320 0.055 248);
+  --st-block:oklch(0.780 0.125 78);
+  --st-block-bg:oklch(0.330 0.048 70);
+  --st-done:oklch(0.740 0.115 158);
+  --st-done-bg:oklch(0.310 0.048 158);
+  --st-defect:oklch(0.720 0.145 27);
+  --st-defect-bg:oklch(0.330 0.062 27);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--ink);text-decoration:underline}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="--row-h:{{ rowH }}px; --glove:{{ glove }}px; background:var(--bg); color:var(--ink); min-height:100vh; font-family:var(--sans); padding:0 0 96px 0">
+
+  <header style="position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:14px 40px; background:var(--surface); border-bottom:1px solid var(--line-strong)">
+    <div style="display:flex; align-items:baseline; gap:16px; min-width:0">
+      <span style="font-family:var(--mono); font-size:12px; letter-spacing:0.08em; color:var(--ink-3)">СПЕЦИФИКАЦИЯ UI · v1.0 · 2026</span>
+      <span style="font-size:14px; font-weight:600; letter-spacing:-0.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">Фасадное производство — эмаль / ПВХ / шпон</span>
+    </div>
+    <button type="button" onClick="{{ toggleTheme }}" style="font-family:var(--mono); font-size:12px; letter-spacing:0.06em; color:var(--ink); background:var(--surface-2); border:1px solid var(--line-strong); border-radius:3px; padding:8px 14px; cursor:pointer" style-hover="background:var(--accent-soft); border-color:var(--accent)">{{ themeLabel }}</button>
+  </header>
+
+  <div style="max-width:1180px; padding:0 40px">
+
+    <section style="padding:56px 0 40px 0; border-bottom:1px solid var(--line)">
+      <h1 style="margin:0 0 14px 0; font-size:44px; line-height:1.05; letter-spacing:-0.025em; font-weight:650; max-width:20ch">Визуальная система производственного контура</h1>
+      <p style="margin:0; max-width:66ch; font-size:16px; line-height:1.55; color:var(--ink-2); text-wrap:pretty">Один язык на три рабочих места: продажи за монитором, технолог в раскрое, цех с телефона в перчатке. Холодные нейтрали, табличные цифры, прямые углы 2–4 px, цвет — только сигнал состояния.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:24px">
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 10px; border:1px solid var(--line-strong); border-radius:3px; color:var(--ink-2)">0001 — эмаль</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 10px; border:1px solid var(--line-strong); border-radius:3px; color:var(--ink-2)">0002-П — ПВХ-плёнка</span>
+        <span style="font-family:var(--mono); font-size:12px; padding:6px 10px; border:1px solid var(--line-strong); border-radius:3px; color:var(--ink-2)">0003-Ш — шпон</span>
+      </div>
+    </section>
+
+    <section style="padding:48px 0; border-bottom:1px solid var(--line)">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">01 / ПАЛИТРА</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Шесть значений и пять сигналов</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">Нейтрали построены на одном холодном тоне (hue 250–254, chroma ≤ 0.018) — интерфейс читается как чертёж, а не как интерьер. Сигнальные цвета держат одинаковую светлоту, поэтому ни один статус не «кричит» громче остальных.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(178px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line)">
+        <sc-for list="{{ palette }}" as="c" hint-placeholder-count="6">
+          <div style="background:var(--surface); padding:0">
+            <div style="height:76px; background:{{ c.swatch }}; border-bottom:1px solid var(--line)"></div>
+            <div style="padding:10px 12px 12px 12px">
+              <div style="font-family:var(--mono); font-size:12px; color:var(--ink)">{{ c.name }}</div>
+              <div style="font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:3px">{{ c.role }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(178px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-top:0">
+        <div style="background:var(--surface)"><div style="height:52px; background:var(--st-wait)"></div><div style="padding:10px 12px"><div style="font-family:var(--mono); font-size:12px">--st-wait</div><div style="font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:3px">ожидает</div></div></div>
+        <div style="background:var(--surface)"><div style="height:52px; background:var(--st-run)"></div><div style="padding:10px 12px"><div style="font-family:var(--mono); font-size:12px">--st-run</div><div style="font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:3px">в работе</div></div></div>
+        <div style="background:var(--surface)"><div style="height:52px; background:var(--st-block)"></div><div style="padding:10px 12px"><div style="font-family:var(--mono); font-size:12px">--st-block</div><div style="font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:3px">заблокирован</div></div></div>
+        <div style="background:var(--surface)"><div style="height:52px; background:var(--st-done)"></div><div style="padding:10px 12px"><div style="font-family:var(--mono); font-size:12px">--st-done</div><div style="font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:3px">завершён</div></div></div>
+        <div style="background:var(--surface)"><div style="height:52px; background:var(--st-defect)"></div><div style="padding:10px 12px"><div style="font-family:var(--mono); font-size:12px">--st-defect</div><div style="font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:3px">брак</div></div></div>
+      </div>
+
+      <div style="margin-top:28px; display:grid; grid-template-columns:1fr; gap:14px">
+        <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.08em; color:var(--ink-3)">ТОКЕНЫ · globals.css</div>
+        <pre style="margin:0; overflow:auto; background:var(--surface); border:1px solid var(--line-strong); border-radius:4px; padding:20px; font-family:var(--mono); font-size:12.5px; line-height:1.7; color:var(--ink-2)">:root {
+  /* нейтрали — один холодный тон, никакого крема */
+  --bg:            oklch(0.968 0.004 250);   /* фон приложения    */
+  --surface:       oklch(1     0     0  );   /* карточки, таблицы */
+  --surface-2:     oklch(0.940 0.006 250);   /* шапки, зебра      */
+  --line:          oklch(0.878 0.008 250);   /* волосяная линия   */
+  --line-strong:   oklch(0.760 0.012 250);   /* граница блока     */
+  --ink:           oklch(0.235 0.018 254);   /* основной текст    */
+  --ink-2:         oklch(0.470 0.014 254);   /* вторичный текст   */
+  --ink-3:         oklch(0.620 0.012 254);   /* подписи, юниты    */
+  --accent:        oklch(0.520 0.135 248);   /* действие, фокус   */
+  --accent-soft:   oklch(0.930 0.030 248);
+  --accent-on:     oklch(0.995 0     0  );
+
+  /* статусы — равная светлота, различие по тону */
+  --st-wait:   oklch(0.500 0.014 254);  --st-wait-bg:   oklch(0.925 0.008 254);
+  --st-run:    oklch(0.520 0.135 248);  --st-run-bg:    oklch(0.930 0.034 248);
+  --st-block:  oklch(0.560 0.135 62 );  --st-block-bg:  oklch(0.930 0.040 78 );
+  --st-done:   oklch(0.500 0.115 158);  --st-done-bg:   oklch(0.925 0.036 158);
+  --st-defect: oklch(0.520 0.165 27 );  --st-defect-bg: oklch(0.930 0.032 27 );
+
+  /* метрика */
+  --r-sm:2px; --r-md:4px;               /* прямые углы: спецификация */
+  --row-h:44px;                          /* строка таблицы, десктоп   */
+  --glove-min:72px;                      /* минимальный тап в перчатке */
+  --tap-gap:16px;                        /* разрыв между тапами        */
+}
+
+[data-theme="dark"] {
+  --bg:            oklch(0.196 0.012 254);
+  --surface:       oklch(0.245 0.014 254);
+  --surface-2:     oklch(0.290 0.014 254);
+  --line:          oklch(0.340 0.014 254);
+  --line-strong:   oklch(0.450 0.016 254);
+  --ink:           oklch(0.945 0.006 250);
+  --ink-2:         oklch(0.760 0.010 250);
+  --ink-3:         oklch(0.620 0.012 250);
+  --accent:        oklch(0.700 0.130 248);
+  --accent-soft:   oklch(0.330 0.058 248);
+  --accent-on:     oklch(0.180 0.020 254);
+
+  --st-wait:   oklch(0.740 0.012 254);  --st-wait-bg:   oklch(0.310 0.010 254);
+  --st-run:    oklch(0.720 0.125 248);  --st-run-bg:    oklch(0.320 0.055 248);
+  --st-block:  oklch(0.780 0.125 78 );  --st-block-bg:  oklch(0.330 0.048 70 );
+  --st-done:   oklch(0.740 0.115 158);  --st-done-bg:   oklch(0.310 0.048 158);
+  --st-defect: oklch(0.720 0.145 27 );  --st-defect-bg: oklch(0.330 0.062 27 );
+}</pre>
+        <pre style="margin:0; overflow:auto; background:var(--surface); border:1px solid var(--line-strong); border-radius:4px; padding:20px; font-family:var(--mono); font-size:12.5px; line-height:1.7; color:var(--ink-2)">// tailwind.config.ts — токены как источник истины
+theme: { extend: {
+  colors: {
+    bg:'var(--bg)', surface:'var(--surface)', surface2:'var(--surface-2)',
+    line:'var(--line)', lineStrong:'var(--line-strong)',
+    ink:'var(--ink)', ink2:'var(--ink-2)', ink3:'var(--ink-3)',
+    accent:'var(--accent)', accentSoft:'var(--accent-soft)', accentOn:'var(--accent-on)',
+    st:{ wait:'var(--st-wait)', run:'var(--st-run)', block:'var(--st-block)',
+         done:'var(--st-done)', defect:'var(--st-defect)' },
+  },
+  borderRadius:{ sm:'var(--r-sm)', DEFAULT:'var(--r-md)' },
+  fontFamily:{ sans:['var(--sans)'], mono:['var(--mono)'] },
+  minHeight:{ glove:'var(--glove-min)' },
+}}</pre>
+      </div>
+
+      <ul style="margin:24px 0 0 0; padding:0; list-style:none; display:grid; gap:8px; max-width:78ch">
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Тон 250–254 на всех нейтралях — цех освещён холодными лампами, тёплая база там читается как грязь на экране.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Chroma нейтралей ≤ 0.018 — фон не спорит с пятью сигнальными цветами и не даёт цветного шума в таблицах.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Статусы на одной светлоте 0.50–0.56 — приоритет задаёт логика экрана, а не яркость краски.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">В тёмной теме светлота сигналов поднята до 0.72–0.78, chroma срезана — сохраняется контраст 4.5:1 на телефоне при ярком свете.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Тёмная тема — не инверсия, а отдельный набор: поверхность светлее фона, чтобы карточки не проваливались.</li>
+      </ul>
+    </section>
+
+    <section style="padding:48px 0; border-bottom:1px solid var(--line)">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">02 / ШРИФТЫ</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Системный гротеск + системный моноширинный</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">CDN шрифтов недоступен, поэтому пара собрана из того, что уже есть в ОС и корректно закрывает кириллицу на Windows-станциях менеджеров и на Android в цеху.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line)">
+        <div style="background:var(--surface); padding:24px">
+          <div style="font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--ink-3)">ИНТЕРФЕЙС · --sans</div>
+          <div style="font-size:34px; letter-spacing:-0.02em; margin:12px 0 10px 0; font-weight:600">Фасад эмаль RAL 9003</div>
+          <div style="font-size:13px; color:var(--ink-2); line-height:1.5">Segoe UI Variable → Segoe UI → Helvetica Neue → Noto Sans. Нейтральный гротеск без характера: интерфейс не должен иметь мнения о заказе.</div>
+          <pre style="margin:14px 0 0 0; font-family:var(--mono); font-size:11.5px; color:var(--ink-3); white-space:pre-wrap">--sans: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Noto Sans", "Helvetica Neue", Arial, sans-serif;</pre>
+        </div>
+        <div style="background:var(--surface); padding:24px">
+          <div style="font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--ink-3)">ЧИСЛА И КОДЫ · --mono</div>
+          <div style="font-family:var(--mono); font-size:34px; letter-spacing:-0.02em; margin:12px 0 10px 0">0002-П · 12,480 м²</div>
+          <div style="font-size:13px; color:var(--ink-2); line-height:1.5">Номер заказа, артикул, размер, м² и рубли — только моноширинный: цифры одной ширины, столбик читается сканированием сверху вниз.</div>
+          <pre style="margin:14px 0 0 0; font-family:var(--mono); font-size:11.5px; color:var(--ink-3); white-space:pre-wrap">--mono: ui-monospace, "SF Mono", "Segoe UI Mono",
+        "Roboto Mono", "Noto Sans Mono", Consolas, monospace;</pre>
+        </div>
+      </div>
+      <ul style="margin:24px 0 0 0; padding:0; list-style:none; display:grid; gap:8px; max-width:78ch">
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Две гарнитуры, а не одна — разделение «текст / измерение» работает как код, а не как украшение.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Никаких засечек: спецификация цеха, а не бланк договора.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Веса ограничены 400 / 500 / 600 — системные семейства не дают предсказуемых 300 и 800 в кириллице.</li>
+      </ul>
+    </section>
+
+    <section style="padding:48px 0; border-bottom:1px solid var(--line)">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">03 / ТИПОГРАФИЧЕСКАЯ ШКАЛА</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Девять ступеней, шаг ×1,25</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">Десктоп начинается с 11 px (подпись к колонке), цех — с 17 px: на телефоне в перчатке нет мелкого текста вообще.</p>
+      <div style="border:1px solid var(--line); background:var(--surface)">
+        <sc-for list="{{ scale }}" as="s" hint-placeholder-count="9">
+          <div style="display:grid; grid-template-columns:132px 1fr 190px; align-items:baseline; gap:20px; padding:14px 20px; border-bottom:1px solid var(--line)">
+            <div style="font-family:var(--mono); font-size:11.5px; color:var(--ink-3)">{{ s.token }}</div>
+            <div style="font-family:{{ s.mono }}; font-size:{{ s.size }}; line-height:1.15; letter-spacing:{{ s.track }}; font-weight:{{ s.weight }}; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ s.sample }}</div>
+            <div style="font-family:var(--mono); font-size:11.5px; color:var(--ink-3); text-align:right">{{ s.spec }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <ul style="margin:24px 0 0 0; padding:0; list-style:none; display:grid; gap:8px; max-width:78ch">
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Трекинг уходит в минус только на кеглях ≥ 26 px — кириллица на системных гротесках плотнее латиницы.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Интерлиньяж 1,15 для чисел и 1,5 для прозы — таблица сжата, инструкция дышит.</li>
+      </ul>
+    </section>
+
+    <section style="padding:48px 0; border-bottom:1px solid var(--line)">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">04 / ТАБЛИЦЫ С ЧИСЛАМИ</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Реестр заказов</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">Числа вправо и моноширинно, текст влево, единицы измерения — отдельным приглушённым суффиксом. Зебры нет: разделяют волосяные линии, иначе на 200 строках рябит.</p>
+
+      <div style="border:1px solid var(--line-strong); background:var(--surface); overflow:auto">
+        <table style="width:100%; border-collapse:collapse; font-size:14px">
+          <thead>
+            <tr style="background:var(--surface-2)">
+              <th style="text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; font-weight:500; color:var(--ink-2); padding:10px 16px; border-bottom:1px solid var(--line-strong); white-space:nowrap">ЗАКАЗ</th>
+              <th style="text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; font-weight:500; color:var(--ink-2); padding:10px 16px; border-bottom:1px solid var(--line-strong); white-space:nowrap">КЛИЕНТ</th>
+              <th style="text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; font-weight:500; color:var(--ink-2); padding:10px 16px; border-bottom:1px solid var(--line-strong); white-space:nowrap">ПОКРЫТИЕ</th>
+              <th style="text-align:right; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; font-weight:500; color:var(--ink-2); padding:10px 16px; border-bottom:1px solid var(--line-strong); white-space:nowrap">ПЛОЩАДЬ</th>
+              <th style="text-align:right; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; font-weight:500; color:var(--ink-2); padding:10px 16px; border-bottom:1px solid var(--line-strong); white-space:nowrap">МДФ, ЛИСТ</th>
+              <th style="text-align:right; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; font-weight:500; color:var(--ink-2); padding:10px 16px; border-bottom:1px solid var(--line-strong); white-space:nowrap">СУММА</th>
+              <th style="text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; font-weight:500; color:var(--ink-2); padding:10px 16px; border-bottom:1px solid var(--line-strong); white-space:nowrap">ЭТАП</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ orders }}" as="o" hint-placeholder-count="6">
+              <tr style="border-bottom:1px solid var(--line)" style-hover="background:var(--surface-2)">
+                <td style="padding:0 16px; height:var(--row-h,44px); font-family:var(--mono); font-size:13.5px; color:var(--ink); white-space:nowrap">{{ o.num }}</td>
+                <td style="padding:0 16px; height:var(--row-h,44px); color:var(--ink); white-space:nowrap; max-width:220px; overflow:hidden; text-overflow:ellipsis">{{ o.client }}</td>
+                <td style="padding:0 16px; height:var(--row-h,44px); color:var(--ink-2); white-space:nowrap">{{ o.kind }}</td>
+                <td style="padding:0 16px; height:var(--row-h,44px); font-family:var(--mono); font-size:13.5px; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums">{{ o.area }} <span style="color:var(--ink-3)">м²</span></td>
+                <td style="padding:0 16px; height:var(--row-h,44px); font-family:var(--mono); font-size:13.5px; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums">{{ o.sheets }} <span style="color:var(--ink-3)">шт</span></td>
+                <td style="padding:0 16px; height:var(--row-h,44px); font-family:var(--mono); font-size:13.5px; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums">{{ o.sum }} <span style="color:var(--ink-3)">₽</span></td>
+                <td style="padding:0 16px; height:var(--row-h,44px); white-space:nowrap">
+                  <span style="display:inline-flex; align-items:center; gap:7px; height:22px; padding:0 8px; border-radius:3px; font-size:12.5px; background:{{ o.badgeBg }}; color:{{ o.badgeFg }}; border:1px solid {{ o.badgeFg }}">
+                    <span style="width:6px; height:6px; border-radius:1px; background:{{ o.badgeFg }}"></span>{{ o.status }}
+                  </span>
+                </td>
+              </tr>
+            </sc-for>
+            <tr style="background:var(--surface-2); border-top:1px solid var(--line-strong)">
+              <td colspan="3" style="padding:0 16px; height:var(--row-h,44px); font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--ink-2)">ИТОГО · 6 ЗАКАЗОВ</td>
+              <td style="padding:0 16px; font-family:var(--mono); font-size:13.5px; text-align:right; font-weight:600; font-variant-numeric:tabular-nums">89,640 <span style="color:var(--ink-3)">м²</span></td>
+              <td style="padding:0 16px; font-family:var(--mono); font-size:13.5px; text-align:right; font-weight:600; font-variant-numeric:tabular-nums">124 <span style="color:var(--ink-3)">шт</span></td>
+              <td style="padding:0 16px; font-family:var(--mono); font-size:13.5px; text-align:right; font-weight:600; font-variant-numeric:tabular-nums">4 218 700 <span style="color:var(--ink-3)">₽</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre style="margin:20px 0 0 0; overflow:auto; background:var(--surface); border:1px solid var(--line-strong); border-radius:4px; padding:20px; font-family:var(--mono); font-size:12.5px; line-height:1.7; color:var(--ink-2)">{{ tableSnippet }}</pre>
+
+      <ul style="margin:24px 0 0 0; padding:0; list-style:none; display:grid; gap:8px; max-width:78ch">
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">tabular-nums + правое выравнивание — разряды выстраиваются в столбик, ошибка в порядке видна без чтения.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Единица измерения — отдельный span цвета --ink-3: число остаётся числом, «м²» не мешает сравнению.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Строка 44 px (36 px в плотном режиме) — на экране менеджера умещается 18 заказов без прокрутки.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Разделители вместо зебры и hover вместо выделения — таблица остаётся спокойной на 200+ строках.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Строка итога на --surface-2 с верхней жирной линией — читается как подведённая черта в накладной.</li>
+      </ul>
+    </section>
+
+    <section style="padding:48px 0; border-bottom:1px solid var(--line)">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">05 / СТАТУСНЫЕ ЗНАЧКИ</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Пять состояний, три размера</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">Значок всегда — квадратный маркер + текст. Цвет дублируется словом: в цеху есть дальтоники, а телефон бывает на солнце.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line)">
+        <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="5">
+          <div style="background:var(--surface); padding:22px; display:grid; gap:14px; justify-items:start">
+            <span style="display:inline-flex; align-items:center; gap:8px; height:24px; padding:0 10px; border-radius:3px; font-size:13px; background:{{ s.bg }}; color:{{ s.fg }}; border:1px solid {{ s.fg }}">
+              <span style="width:7px; height:7px; border-radius:1px; background:{{ s.fg }}"></span>{{ s.label }}
+            </span>
+            <span style="display:inline-flex; align-items:center; gap:10px; height:40px; padding:0 16px; border-radius:4px; font-size:17px; font-weight:500; background:{{ s.bg }}; color:{{ s.fg }}; border:1px solid {{ s.fg }}">
+              <span style="width:10px; height:10px; border-radius:1px; background:{{ s.fg }}"></span>{{ s.label }}
+            </span>
+            <div style="font-family:var(--mono); font-size:11.5px; color:var(--ink-3); line-height:1.5">{{ s.token }}<br />{{ s.when }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <pre style="margin:20px 0 0 0; overflow:auto; background:var(--surface); border:1px solid var(--line-strong); border-radius:4px; padding:20px; font-family:var(--mono); font-size:12.5px; line-height:1.7; color:var(--ink-2)">{{ badgeSnippet }}</pre>
+
+      <ul style="margin:24px 0 0 0; padding:0; list-style:none; display:grid; gap:8px; max-width:78ch">
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Маркер квадратный, радиус 1 px — круглая точка читается как «уведомление», квадрат как «позиция спецификации».</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Обводка 1 px тем же тоном, что и текст — значок остаётся видимым на печати наряда в ч/б.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Заливка 10 % — фон подсказывает состояние, но не превращает строку таблицы в цветную полосу.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">«Заблокирован» — янтарный, «брак» — красный: остановка обратима, брак нет; разный тон предотвращает путаницу в отчёте.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Размер lg (40 px) — единственный вариант в цеховом интерфейсе, sm остаётся десктопу.</li>
+      </ul>
+    </section>
+
+    <section style="padding:48px 0; border-bottom:1px solid var(--line)">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">06 / ПЛИТКИ С ПОКАЗАТЕЛЯМИ</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Сводка смены</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">Плитка — это подпись, число и единица. Никаких иконок и спарклайнов: показатель либо важен и стоит крупно, либо его нет.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(212px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line-strong)">
+        <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+          <div style="background:var(--surface); padding:20px 20px 18px 20px; display:grid; gap:10px">
+            <div style="font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--ink-3)">{{ m.label }}</div>
+            <div style="display:flex; align-items:baseline; gap:7px">
+              <span style="font-family:var(--mono); font-size:34px; line-height:1; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; color:var(--ink)">{{ m.value }}</span>
+              <span style="font-family:var(--mono); font-size:14px; color:var(--ink-3)">{{ m.unit }}</span>
+            </div>
+            <div style="font-family:var(--mono); font-size:12px; color:{{ m.deltaColor }}">{{ m.delta }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <ul style="margin:24px 0 0 0; padding:0; list-style:none; display:grid; gap:8px; max-width:78ch">
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Плитки стыкуются в сетку через 1 px линии — блок читается как одна таблица, а не как россыпь карточек.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Значение 34 px моно, единица 14 px — сравнение по колонке возможно на расстоянии вытянутой руки.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Дельта цветом только когда она про качество (брак, простой), иначе нейтральная.</li>
+      </ul>
+    </section>
+
+    <section style="padding:48px 0; border-bottom:1px solid var(--line)">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">07 / КАРТЫ РАСКРОЯ</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Лист МДФ 2800 × 2070 × 16</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">Карта — технический чертёж: заливка нейтральная, цветом отмечается только деталь под курсором и остаток. Подписи внутри детали, размер всегда в мм через ×.</p>
+
+      <div style="display:grid; grid-template-columns:1fr; gap:1px; background:var(--line); border:1px solid var(--line-strong)">
+        <div style="background:var(--surface); padding:20px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px">
+          <div style="display:flex; align-items:baseline; gap:14px">
+            <span style="font-family:var(--mono); font-size:15px; color:var(--ink)">КАРТА 0001 / ЛИСТ 3 из 7</span>
+            <span style="font-family:var(--mono); font-size:12px; color:var(--ink-3)">эмаль · RAL 9003 · фрезеровка «Классик»</span>
+          </div>
+          <div style="display:flex; gap:22px; font-family:var(--mono); font-size:12px">
+            <span style="color:var(--ink-3)">ПОЛЕЗНЫЙ ВЫХОД <span style="color:var(--ink); font-size:14px">87,4 %</span></span>
+            <span style="color:var(--ink-3)">ОТХОД <span style="color:var(--ink); font-size:14px">0,74 м²</span></span>
+          </div>
+        </div>
+        <div style="background:var(--surface-2); padding:24px; overflow:auto">
+          <svg viewBox="0 0 2800 2070" style="display:block; width:100%; min-width:520px; height:auto; background:var(--surface); border:2px solid var(--line-strong)" role="img" aria-label="Карта раскроя листа МДФ">
+            <g style="font-family:var(--mono)">
+              <rect x="40" y="40" width="1180" height="700" fill="var(--surface-2)" stroke="var(--ink-2)" stroke-width="6" />
+              <text x="70" y="110" style="font-size:60px; fill:var(--ink)">Ф-01 · 1180×700</text>
+              <text x="70" y="180" style="font-size:48px; fill:var(--ink-3)">фасад нижний, 2 шт</text>
+
+              <rect x="1260" y="40" width="780" height="700" fill="var(--surface-2)" stroke="var(--ink-2)" stroke-width="6" />
+              <text x="1290" y="110" style="font-size:60px; fill:var(--ink)">Ф-02 · 780×700</text>
+
+              <rect x="2080" y="40" width="680" height="1400" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="8" />
+              <text x="2110" y="110" style="font-size:60px; fill:var(--accent)">Ф-03 · 680×1400</text>
+              <text x="2110" y="180" style="font-size:48px; fill:var(--accent)">выбрано</text>
+
+              <rect x="40" y="780" width="900" height="620" fill="var(--surface-2)" stroke="var(--ink-2)" stroke-width="6" />
+              <text x="70" y="850" style="font-size:60px; fill:var(--ink)">Ф-04 · 900×620</text>
+
+              <rect x="980" y="780" width="1060" height="620" fill="var(--surface-2)" stroke="var(--ink-2)" stroke-width="6" />
+              <text x="1010" y="850" style="font-size:60px; fill:var(--ink)">Ф-05 · 1060×620</text>
+
+              <rect x="40" y="1440" width="2000" height="590" fill="var(--surface-2)" stroke="var(--ink-2)" stroke-width="6" />
+              <text x="70" y="1510" style="font-size:60px; fill:var(--ink)">Ф-06 · 2000×590</text>
+
+              <rect x="2080" y="1480" width="680" height="550" fill="none" stroke="var(--ink-3)" stroke-width="5" stroke-dasharray="26 22" />
+              <text x="2110" y="1550" style="font-size:56px; fill:var(--ink-3)">ОСТАТОК 680×550</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <ul style="margin:24px 0 0 0; padding:0; list-style:none; display:grid; gap:8px; max-width:78ch">
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Детали — заливка --surface-2 с контуром --ink-2: карта печатается и остаётся читаемой на ч/б принтере в цеху.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Акцент зарезервирован под выбранную деталь — единственный цвет на чертеже указывает, где сейчас внимание.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Остаток — пунктир без заливки: визуально «пустое место», а не ещё одна деталь.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Все подписи моноширинные и в мм — совпадают с форматом наряда и с полем ввода в калькуляторе.</li>
+        <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Толщина реза и кромка не рисуются условно — масштаб 1:1 в координатах viewBox, чтобы карта не врала технологу.</li>
+      </ul>
+    </section>
+
+    <section style="padding:48px 0">
+      <div style="font-family:var(--mono); font-size:12px; letter-spacing:0.10em; color:var(--ink-3); margin-bottom:8px">08 / ЦЕХ · КНОПКИ ПОД ПЕРЧАТКУ</div>
+      <h2 style="margin:0 0 6px 0; font-size:26px; letter-spacing:-0.015em; font-weight:620">Отметка этапа</h2>
+      <p style="margin:0 0 28px 0; max-width:64ch; font-size:14px; line-height:1.55; color:var(--ink-2)">Одно действие — один прямоугольник во всю ширину, не ниже 72 px, разрыв 16 px. Деструктивные действия («брак») отделены и требуют подтверждения.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:32px; align-items:start">
+        <div style="background:var(--surface); border:1px solid var(--line-strong); border-radius:4px; padding:20px; max-width:420px">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:6px">
+            <span style="font-family:var(--mono); font-size:20px; color:var(--ink)">0003-Ш</span>
+            <span style="display:inline-flex; align-items:center; gap:8px; height:26px; padding:0 10px; border-radius:3px; font-size:13px; background:var(--st-run-bg); color:var(--st-run); border:1px solid var(--st-run)"><span style="width:7px; height:7px; border-radius:1px; background:var(--st-run)"></span>В работе</span>
+          </div>
+          <div style="font-size:15px; color:var(--ink-2); margin-bottom:4px">Шпон дуб · участок шлифовки</div>
+          <div style="font-family:var(--mono); font-size:13px; color:var(--ink-3); margin-bottom:20px">партия 14 из 22 · 6,80 м²</div>
+
+          <div style="display:grid; gap:16px">
+            <button type="button" style="display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; min-height:var(--glove,72px); padding:0 24px; border:none; border-radius:4px; background:var(--accent); color:var(--accent-on); font-family:var(--sans); font-size:20px; font-weight:600; letter-spacing:-0.01em; cursor:pointer; touch-action:manipulation" style-active="transform:translateY(1px); filter:brightness(0.92)">
+              Этап завершён
+              <span style="font-family:var(--mono); font-size:14px; font-weight:400; opacity:0.75">14/22</span>
+            </button>
+            <button type="button" style="display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; min-height:var(--glove,72px); padding:0 24px; border:2px solid var(--line-strong); border-radius:4px; background:var(--surface); color:var(--ink); font-family:var(--sans); font-size:20px; font-weight:600; letter-spacing:-0.01em; cursor:pointer; touch-action:manipulation" style-active="background:var(--surface-2); transform:translateY(1px)">
+              Приостановить
+              <span style="font-family:var(--mono); font-size:14px; font-weight:400; color:var(--ink-3)">пауза</span>
+            </button>
+            <div style="height:1px; background:var(--line); margin:8px 0"></div>
+            <button type="button" style="display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; min-height:var(--glove,72px); padding:0 24px; border:2px solid var(--st-defect); border-radius:4px; background:var(--st-defect-bg); color:var(--st-defect); font-family:var(--sans); font-size:20px; font-weight:600; letter-spacing:-0.01em; cursor:pointer; touch-action:manipulation" style-active="transform:translateY(1px); filter:brightness(0.95)">
+              Отметить брак
+              <span style="font-family:var(--mono); font-size:14px; font-weight:400; opacity:0.8">подтв.</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="display:grid; gap:20px">
+          <pre style="margin:0; overflow:auto; background:var(--surface); border:1px solid var(--line-strong); border-radius:4px; padding:20px; font-family:var(--mono); font-size:12.5px; line-height:1.7; color:var(--ink-2)">{{ buttonSnippet }}</pre>
+          <ul style="margin:0; padding:0; list-style:none; display:grid; gap:8px">
+            <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">72 px по высоте — палец в тканевой перчатке даёт пятно контакта ~14 мм, 44 px промахивается.</li>
+            <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Разрыв 16 px между кнопками — исключает случайное срабатывание соседней при тряске.</li>
+            <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Кнопка во всю ширину, текст слева — цель попадания равна карточке, а не подписи.</li>
+            <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Отклик — сдвиг 1 px и затемнение, без анимации: в перчатке важен мгновенный ответ, не переход.</li>
+            <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">«Брак» отделён линией и вынесен вниз — необратимое действие не должно быть под большим пальцем по умолчанию.</li>
+            <li style="font-size:13.5px; line-height:1.5; color:var(--ink-2); border-left:1px solid var(--line-strong); padding-left:12px">Радиус 4 px и никаких теней — плоские плашки читаются на грязном экране при боковом свете.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light'|'dark'&quot;,&quot;section&quot;:&quot;Тема&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;comfortable&quot;,&quot;compact&quot;],&quot;default&quot;:&quot;comfortable&quot;,&quot;tsType&quot;:&quot;'comfortable'|'compact'&quot;,&quot;section&quot;:&quot;Таблицы&quot;},&quot;gloveTarget&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:56,&quot;max&quot;:96,&quot;step&quot;:4,&quot;default&quot;:72,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Цех&quot;}}">
+class Component extends DCLogic {
+  state = { theme: null };
+
+  get theme() {
+    return this.state.theme ?? this.props.theme ?? 'light';
+  }
+
+  renderVals() {
+    const t = this.theme;
+    const CN = 'class' + 'Name';
+    const tableSnippet = [
+      '<table ' + CN + '="w-full border-collapse text-[14px]">',
+      '  <thead>',
+      '    <tr ' + CN + '="bg-surface2">',
+      '      <th ' + CN + '="px-4 py-2.5 text-left  font-mono text-[11px] font-medium tracking-[0.08em] text-ink2 border-b border-lineStrong">ЗАКАЗ</th>',
+      '      <th ' + CN + '="px-4 py-2.5 text-right font-mono text-[11px] font-medium tracking-[0.08em] text-ink2 border-b border-lineStrong">ПЛОЩАДЬ</th>',
+      '    </tr>',
+      '  </thead>',
+      '  <tbody>',
+      '    <tr ' + CN + '="h-11 border-b border-line hover:bg-surface2">',
+      '      <td ' + CN + '="px-4 font-mono text-[13.5px] whitespace-nowrap">0002-П</td>',
+      '      <td ' + CN + '="px-4 font-mono text-[13.5px] text-right tabular-nums whitespace-nowrap">',
+      '        18,240 <span ' + CN + '="text-ink3">м²</span>',
+      '      </td>',
+      '    </tr>',
+      '  </tbody>',
+      '</table>',
+    ].join('\n');
+    const badgeSnippet = [
+      'const STATUS = {',
+      "  wait:   { label:'Ожидает',      fg:'text-st-wait',   bg:'bg-st-wait/10',   ring:'ring-st-wait'   },",
+      "  run:    { label:'В работе',     fg:'text-st-run',    bg:'bg-st-run/10',    ring:'ring-st-run'    },",
+      "  block:  { label:'Заблокирован', fg:'text-st-block',  bg:'bg-st-block/10',  ring:'ring-st-block'  },",
+      "  done:   { label:'Завершён',     fg:'text-st-done',   bg:'bg-st-done/10',   ring:'ring-st-done'   },",
+      "  defect: { label:'Брак',         fg:'text-st-defect', bg:'bg-st-defect/10', ring:'ring-st-defect' },",
+      '} as const',
+      '',
+      "export function StatusBadge({ state, size = 'sm' }: { state: keyof typeof STATUS; size?: 'sm'|'lg' }) {",
+      '  const s = STATUS[state]',
+      "  const box = size === 'lg' ? 'h-10 px-4 text-[17px] gap-2.5' : 'h-6 px-2.5 text-[13px] gap-2'",
+      "  const dot = size === 'lg' ? 'size-2.5' : 'size-[7px]'",
+      '  return (',
+      '    <span ' + CN + '={`inline-flex items-center rounded-sm ring-1 ring-inset ${box} ${s.bg} ${s.fg} ${s.ring}`}>',
+      '      <span ' + CN + '={`${dot} rounded-[1px] bg-current`} aria-hidden />',
+      '      {s.label}',
+      '    </span>',
+      '  )',
+      '}',
+    ].join('\n');
+    const buttonSnippet = [
+      '<button',
+      '  type="button"',
+      '  onClick={completeStage}',
+      '  ' + CN + '="flex w-full min-h-glove items-center justify-between gap-4',
+      '             rounded px-6 text-[20px] font-semibold tracking-[-0.01em]',
+      '             bg-accent text-accentOn touch-manipulation select-none',
+      '             active:translate-y-px active:brightness-90',
+      '             focus-visible:outline focus-visible:outline-[3px]',
+      '             focus-visible:outline-offset-2 focus-visible:outline-accent"',
+      '>',
+      '  Этап завершён',
+      '  <span ' + CN + '="font-mono text-sm font-normal opacity-75">14/22</span>',
+      '</button>',
+      '',
+      '/* деструктивное — отделено разделителем и подтверждением */',
+      '<button ' + CN + '="... min-h-glove border-2 border-st-defect',
+      '                   bg-st-defect/10 text-st-defect">',
+      '  Отметить брак',
+      '</button>',
+    ].join('\n');
+    const density = this.props.density ?? 'comfortable';
+    return {
+      theme: t,
+      themeLabel: t === 'dark' ? 'СВЕТЛАЯ ТЕМА' : 'ТЁМНАЯ ТЕМА',
+      toggleTheme: () => this.setState({ theme: this.theme === 'dark' ? 'light' : 'dark' }),
+      tableSnippet, badgeSnippet, buttonSnippet,
+      rowH: density === 'compact' ? 36 : 44,
+      glove: this.props.gloveTarget ?? 72,
+
+      palette: [
+        { name: '--bg', role: 'фон приложения', swatch: 'var(--bg)' },
+        { name: '--surface', role: 'таблицы, карточки', swatch: 'var(--surface)' },
+        { name: '--surface-2', role: 'шапки, итоги', swatch: 'var(--surface-2)' },
+        { name: '--line', role: 'волосяная линия', swatch: 'var(--line)' },
+        { name: '--ink', role: 'основной текст', swatch: 'var(--ink)' },
+        { name: '--accent', role: 'действие и фокус', swatch: 'var(--accent)' },
+      ],
+
+      scale: [
+        { token: '--t-display', sample: 'Реестр заказов', spec: '44 / 1.05 / −0.025em / 650', size: '44px', track: '-0.025em', weight: 650, mono: 'var(--sans)' },
+        { token: '--t-h1', sample: 'Карта раскроя 0001', spec: '34 / 1.1 / −0.02em / 620', size: '34px', track: '-0.02em', weight: 620, mono: 'var(--sans)' },
+        { token: '--t-h2', sample: 'Расход материалов', spec: '26 / 1.15 / −0.015em / 620', size: '26px', track: '-0.015em', weight: 620, mono: 'var(--sans)' },
+        { token: '--t-h3', sample: 'Участок шлифовки', spec: '20 / 1.25 / −0.01em / 600', size: '20px', track: '-0.01em', weight: 600, mono: 'var(--sans)' },
+        { token: '--t-shop', sample: 'Этап завершён', spec: '17 / 1.3 / 0 / 500 · цех', size: '17px', track: '0', weight: 500, mono: 'var(--sans)' },
+        { token: '--t-body', sample: 'Фасад МДФ 16 мм, покрытие эмаль', spec: '15 / 1.5 / 0 / 400', size: '15px', track: '0', weight: 400, mono: 'var(--sans)' },
+        { token: '--t-table', sample: '0002-П · 18,240 м² · 412 900 ₽', spec: '13.5 / 1.2 / 0 / 400 · моно', size: '13.5px', track: '0', weight: 400, mono: 'var(--mono)' },
+        { token: '--t-meta', sample: 'обновлено 14:20, смена №2', spec: '12.5 / 1.45 / 0 / 400', size: '12.5px', track: '0', weight: 400, mono: 'var(--sans)' },
+        { token: '--t-label', sample: 'ПОКРЫТИЕ · ПЛОЩАДЬ · СУММА', spec: '11 / 1.2 / 0.08em / 500', size: '11px', track: '0.08em', weight: 500, mono: 'var(--mono)' },
+      ],
+
+      orders: [
+        { num: '0001', client: 'Кухни Прайм, Казань', kind: 'Эмаль RAL 9003', area: '18,240', sheets: '24', sum: '612 400', status: 'В работе', badgeFg: 'var(--st-run)', badgeBg: 'var(--st-run-bg)' },
+        { num: '0002-П', client: 'МебельДом', kind: 'ПВХ, дуб сонома', area: '9,120', sheets: '13', sum: '248 900', status: 'Ожидает', badgeFg: 'var(--st-wait)', badgeBg: 'var(--st-wait-bg)' },
+        { num: '0003-Ш', client: 'Ателье Столяр', kind: 'Шпон дуб', area: '6,800', sheets: '11', sum: '731 250', status: 'В работе', badgeFg: 'var(--st-run)', badgeBg: 'var(--st-run-bg)' },
+        { num: '0004', client: 'ИП Ковалёв А. С.', kind: 'Эмаль RAL 7016', area: '22,460', sheets: '31', sum: '904 800', status: 'Заблокирован', badgeFg: 'var(--st-block)', badgeBg: 'var(--st-block-bg)' },
+        { num: '0005-П', client: 'Фабрика Заря', kind: 'ПВХ, белый глянец', area: '27,900', sheets: '36', sum: '1 386 200', status: 'Завершён', badgeFg: 'var(--st-done)', badgeBg: 'var(--st-done-bg)' },
+        { num: '0006-Ш', client: 'Интерьер-М', kind: 'Шпон орех', area: '5,120', sheets: '9', sum: '335 150', status: 'Брак', badgeFg: 'var(--st-defect)', badgeBg: 'var(--st-defect-bg)' },
+      ],
+
+      statuses: [
+        { label: 'Ожидает', token: '--st-wait', when: 'принят, не запущен', fg: 'var(--st-wait)', bg: 'var(--st-wait-bg)' },
+        { label: 'В работе', token: '--st-run', when: 'есть отметка участка', fg: 'var(--st-run)', bg: 'var(--st-run-bg)' },
+        { label: 'Заблокирован', token: '--st-block', when: 'нет материала / согласования', fg: 'var(--st-block)', bg: 'var(--st-block-bg)' },
+        { label: 'Завершён', token: '--st-done', when: 'принят ОТК, отгружен', fg: 'var(--st-done)', bg: 'var(--st-done-bg)' },
+        { label: 'Брак', token: '--st-defect', when: 'списание, перезапуск партии', fg: 'var(--st-defect)', bg: 'var(--st-defect-bg)' },
+      ],
+
+      metrics: [
+        { label: 'ВЫПУЩЕНО ЗА СМЕНУ', value: '48,60', unit: 'м²', delta: '+6,2 % к плану', deltaColor: 'var(--ink-3)' },
+        { label: 'РАСХОД МДФ 16 ММ', value: '124', unit: 'листа', delta: 'полезный выход 87,4 %', deltaColor: 'var(--ink-3)' },
+        { label: 'БРАК', value: '1,84', unit: 'м²', delta: '3,8 % — выше нормы 2 %', deltaColor: 'var(--st-defect)' },
+        { label: 'ОТГРУЖЕНО', value: '4 218 700', unit: '₽', delta: '6 заказов закрыто', deltaColor: 'var(--ink-3)' },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

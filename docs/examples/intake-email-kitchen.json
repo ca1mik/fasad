@@ -1,0 +1,20 @@
+{
+  "message_id": "<kitchen-2026-00021@example.com>",
+  "subject": "Кухня. Нужен расчет нижних модулей",
+  "from_name": "Анна Смирнова",
+  "from_email": "anna.smirnova@example.com",
+  "from_phone": "+79997775544",
+  "body_text": "Добрый день. Нужен расчет 4 нижних модулей кухни по 600 мм. Корпус белый, фасады дуб. Высота 720, глубина 560. Во вложении эскиз.",
+  "attachments": [
+    {
+      "file_name": "kitchen-plan.jpg",
+      "mime_type": "image/jpeg",
+      "size_bytes": 243881,
+      "content_base64": "<base64-jpeg-content>"
+    }
+  ],
+  "raw_payload": {
+    "mailbox": "sales@example.com",
+    "received_at": "2026-04-01T09:55:00Z"
+  }
+}

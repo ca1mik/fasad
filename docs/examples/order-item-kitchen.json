@@ -1,0 +1,16 @@
+{
+  "template_id": "kitchen-module-basic-template-id",
+  "item_type": "kitchen_module_basic",
+  "name": "Нижний модуль кухни 600",
+  "width": 600,
+  "height": 720,
+  "depth": 560,
+  "quantity": 4,
+  "params_json": {
+    "facade_type": "mdf_oak",
+    "drawers": 3,
+    "legs": true,
+    "edge_color": "white",
+    "handle_type": "profile"
+  }
+}

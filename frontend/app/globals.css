@@ -1,0 +1,344 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 36 30% 96%;
+  --foreground: 220 33% 12%;
+  --card: 0 0% 100%;
+  --muted: 36 25% 91%;
+  --border: 30 18% 83%;
+  --accent: 34 88% 61%;
+  --primary: 210 61% 18%;
+  --success: 151 42% 35%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: hsl(var(--foreground));
+  background:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.12), transparent 28%),
+    linear-gradient(180deg, #fffdf8 0%, #f7f2e7 100%);
+  background-size: cover;
+  overflow-x: clip;
+}
+
+.app-grid {
+  background-image: theme("backgroundImage.grid");
+  background-size: 28px 28px;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-semibold tracking-tight text-slate-900;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-3xl border border-[hsl(var(--border))] bg-white/85 shadow-panel backdrop-blur;
+  }
+
+  .subtle-text {
+    @apply text-sm text-slate-500;
+  }
+
+  /* Цифры в таблицах и сводках — моноширинные, чтобы разряды стояли в столбик. */
+  .num {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unit {
+    @apply text-slate-500;
+  }
+
+  /* Надзаголовок раздела: тот же приём, что у Badge, но без плашки. */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-slate-500;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Печатные бланки цеха.
+
+   Вёрстка снята с бумаги, которую студия печатает сейчас: бланк заказа и карта
+   раскроя SketchCut. Держим отдельным слоем, чтобы экранные стили приложения
+   на них не влияли — печатается ровно то, что привыкли видеть в цехе.
+   --------------------------------------------------------------------------- */
+
+.print-sheet {
+  background: #fff;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1.25;
+  overflow-x: auto;
+}
+
+.print-page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto 8mm;
+  padding: 10mm 8mm;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 1px 6px rgb(15 23 42 / 0.18);
+}
+
+/* --- бланк заказа --- */
+
+.blank-title {
+  margin: 0 0 6px;
+  text-align: center;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.blank-number {
+  margin: 0 0 10px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.blank-number strong {
+  margin-left: 10mm;
+  font-size: 14px;
+}
+
+.blank-head {
+  margin: 0 0 8px;
+  display: grid;
+  gap: 2px;
+}
+
+.blank-head div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.blank-head dt {
+  min-width: 26mm;
+}
+
+.blank-head dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.blank-head-wide {
+  gap: 4px;
+}
+
+.blank-head-wide dt {
+  min-width: 0;
+}
+
+/* места, куда вписывают от руки */
+.blank-fill {
+  min-width: 34mm;
+  border-bottom: 1px solid #000;
+}
+
+.blank-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.blank-table th,
+.blank-table td {
+  border: 1px solid #000;
+  padding: 1px 3px;
+  text-align: center;
+  height: 5mm;
+  overflow: hidden;
+}
+
+.blank-table th {
+  font-weight: 700;
+}
+
+.blank-table .col-num {
+  width: 9mm;
+  text-align: right;
+}
+
+.blank-table .col-qty {
+  width: 14mm;
+}
+
+.blank-table .col-mm {
+  width: 10mm;
+  font-weight: 700;
+}
+
+.blank-table .col-color {
+  width: 52mm;
+  font-size: 10px;
+}
+
+.blank-table tfoot td {
+  border: none;
+  font-weight: 700;
+  height: 7mm;
+}
+
+.blank-bottom {
+  margin-top: 4mm;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10mm;
+}
+
+.blank-signs p {
+  margin: 0 0 4mm;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.blank-line {
+  display: inline-block;
+  width: 60mm;
+  border-bottom: 1px solid #000;
+}
+
+.blank-thickness {
+  border-collapse: collapse;
+}
+
+.blank-thickness td {
+  border: 1px solid #000;
+  padding: 1px 6px;
+  min-width: 14mm;
+  text-align: center;
+}
+
+.blank-footer {
+  margin-top: 6mm;
+  text-align: center;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.blank-footer p {
+  margin: 0;
+}
+
+/* --- карта раскроя --- */
+
+/* Страница карты — один SVG на весь лист A4. Та же разметка идёт на экран,
+   на печать и в скачиваемый файл, поэтому бумага и файл совпадают буквально. */
+.map-page {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .print-sheet {
+    overflow: visible;
+  }
+
+  .print-page {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    /* каждый бланк и каждая карта — отдельный лист бумаги */
+    break-after: page;
+  }
+
+  .print-page:last-child {
+    break-after: auto;
+  }
+
+  .print-hidden,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Отчёт печатается как документ: белый фон, тонкие рамки, без теней.
+     Таблицу на несколько листов режем по строкам, а шапку повторяем — иначе
+     на втором листе непонятно, что за колонки. */
+  .report-print {
+    max-width: none;
+    padding: 0;
+  }
+
+  .report-print table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .report-print thead {
+    display: table-header-group;
+  }
+
+  .report-print tr {
+    break-inside: avoid;
+  }
+
+  .report-print th,
+  .report-print td {
+    border: 1px solid #cbd5e1;
+    padding: 3px 5px;
+  }
+
+  .report-print section {
+    break-inside: avoid-page;
+  }
+}

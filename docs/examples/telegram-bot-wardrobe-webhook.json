@@ -1,0 +1,19 @@
+{
+  "update_id": 2,
+  "callback_query": {
+    "id": "cb-2",
+    "data": "product:wardrobe_basic",
+    "from": {
+      "id": 7001,
+      "first_name": "Demo",
+      "last_name": "User"
+    },
+    "message": {
+      "message_id": 2,
+      "chat": {
+        "id": 501,
+        "type": "private"
+      }
+    }
+  }
+}

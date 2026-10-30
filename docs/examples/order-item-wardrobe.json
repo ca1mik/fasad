@@ -1,0 +1,16 @@
+{
+  "template_id": "wardrobe-basic-template-id",
+  "item_type": "wardrobe_basic",
+  "name": "Шкаф-купе в нишу",
+  "width": 1800,
+  "height": 2400,
+  "depth": 600,
+  "quantity": 1,
+  "params_json": {
+    "doors_count": 2,
+    "shelves_count": 5,
+    "section_count": 2,
+    "base_plinth": true,
+    "color": "white_oak"
+  }
+}
